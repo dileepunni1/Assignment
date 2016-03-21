@@ -47,11 +47,30 @@ class index extends baseRequest{
 				if(is_array($frames['frames'])) {
 					$objScore = new \Controller\scoreController();
 					//print_r($frames['frames']);
-					echo json_encode($objScore->getTotalScore($frames['frames']));
+					echo json_encode(['score' => $objScore->getTotalScore($frames['frames'])]);
 				}
 			}
 		}
 	}
+
+
+	function ffTest() {
+	$objScore = new \Controller\scoreController();
+	
+	echo json_encode($objScore->getTotalScore(
+		Array ( 
+    	     Array ( "first" => 10, "second" => 0 ), 
+    	     Array ( "first" => 10, "second" => 0 ) ,
+    	     Array ( "first" => 10, "second" => 0 ) ,
+    	     Array ( "first" => 10, "second" => 0 ) ,
+    	     Array ( "first" => 10, "second" => 0 ) ,
+    	     Array ( "first" => 10, "second" => 0 ) ,
+    	     Array ( "first" => 10, "second" => 0 ) ,
+    	     Array ( "first" => 10, "second" => 0 ),
+    	     Array ( "first" => 10, "second" => 0 ),
+    	     Array ( "first" => 10, "second" => 10, "third" => 10 ) )
+		));
+}
 }
 
 
@@ -65,4 +84,12 @@ $router = new R();
 $router->a('/score/calculate', [new index, 'getTotalScore']);
 
 
+
+$router->a('/score/tt', [new index, 'ffTest']);
+
+
+
+
 $router->e();
+
+

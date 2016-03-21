@@ -24,7 +24,7 @@ class scoreController {
 		        }
 			}
 
-		return  ['score' => $SM->score()];
+		return  $SM->score();
 
 	}
 		
