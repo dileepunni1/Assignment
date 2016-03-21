@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" ng-app="bowlingScoreApp">
+    <head>
+        <title>Bowling Score Calculator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="assets/bower_components/bootstrap/dist/css/bootstrap.css"><link rel="stylesheet" type="text/css" href="assets/main.css">
+    
+    </head>
+    <body ng-controller="scoreController as ctl">
+       
+        <div class="container" id="content">
+
+           <ng-form>
+          
+                <div class="row">
+                  <div class="col-xs-12 col-sm-12 col-md-12">
+
+                   <div class="row">
+                       <div class="col-md-12">
+                            <h1 class="lead text-center">Bowling Score Calculator</h1>
+                       </div>
+
+                   </div>
+                  
+                    <div class="spacer"></div>
+
+                    <div class="panel panel-default">
+                      <div class="panel-heading">Score: <b><span ng-bind="ctl.total" /></b></div>
+                      <div class="panel-body">  
+
+                              <table class="table">
+                                 <thead>
+                                     <tr >
+                                         <td class="text-center" colspan="{{ i === 10 ? 3 : 2}}" ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]"><span ng-bind="i"></span></td>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     <tr>
+                                         <td ng-repeat = "j in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] track by $index">
+                                             <input type="text" name="pin{{$index}}" id="pin{{$index}}" ng-model="ctl.score[$index]" ng-model-options="{ debounce: 500 }" ng-blur="ctl.updateScoreBoard($index)" class="box text-center"  maxlength="2" ng-disabled="ctl.score.length < $index || ctl.score.length > $index" />
+                                         </td>
+                                     </tr>
+                                    
+                                 </tbody>
+                                 
+                              </table>
+                            
+                        
+                      </div>
+                      <div class="panel-footer" ng-if="ctl.showResult">
+                        <div class="alert alert-success" role="alert">
+                         Congratulations! Your final score is <span ng-bind="ctl.score"></span>!
+                        </div>
+                      </div>
+                    </div>
+                  
+
+                  </div>
+                 
+                </div>
+
+            </ng-form>
+
+        </div>
+       
+        <footer class="footer">
+            <div class="footer-w">
+                <p>© DSG | POWERED BY ANGULARJS &amp; PHP</p>
+            </div>
+        </footer>
+
+       <script src="js/bower_components/jquery/dist/jquery.js"></script>
+    <script src="js/bower_components/angular/angular.js"></script>
+    <script src="js/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="js/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <!-- autoInclude: jsApp !-->
+
+    <!-- inject:js -->
+    <script src="js/html2js/core/directive/scoreSheet/scoreSheet.js"></script>
+    <script src="js/core/app.js"></script>
+    <script src="js/core/directive/scoreSheet/directive.js"></script>
+    <script src="js/core/directive/utils.js"></script>
+    <script src="js/core/scoreFactory.js"></script>
+    <script src="js/core/scoreController.js"></script>
+    <script src="js/core/player.js"></script>
+    <!-- endinject -->
+    </body>
+</html>
