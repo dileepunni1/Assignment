@@ -17,7 +17,7 @@
 
                    <div class="row">
                        <div class="col-md-12">
-                            <h1 class="lead text-center">Bowling Score Calculator</h1>
+                            <h1 class="text-center">Bowling Score Calculator</h1>
                        </div>
 
                    </div>
@@ -30,7 +30,10 @@
                        <div class="row">
                         <div class="col-md-12">
                           <div class="pull-left">  Score: <b><span ng-bind="ctl.total" /></b></div>
-                          <div class="pull-right"><button class="btn btn-success" ng-click="ctl.reset()">Reset</button></div>
+                          <div class="pull-right">
+                            <span class="btn btn-success" ng-if="ctl.score.length >= 1" ng-click="ctl.resetLast()">Reset last</span>
+                            <span class="btn btn-success" ng-click="ctl.reset()">Reset all</span>
+                          </div>
                         </div>
                        </div>
 
@@ -50,7 +53,7 @@
                                  <tbody>
                                      <tr>
                                          <td ng-repeat = "j in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] track by $index">
-                                             <input type="text" name="pin{{$index}}" id="pin{{$index}}" ng-model="ctl.score[$index]" ng-model-options="{ debounce: 500 }" ng-blur="ctl.updateScoreBoard($index)" class="box text-center"  maxlength="2" ng-disabled="ctl.score.length < $index || ctl.score.length > $index" />
+                                             <input type="text" name="pin{{$index}}" id="pin{{$index}}" ng-model="ctl.score[$index]" ng-model-options="{ debounce: 500 }"  class="box text-center"  maxlength="2" ng-disabled="ctl.score.length < $index || ctl.score.length > $index" />
                                          </td>
                                      </tr>
                                     

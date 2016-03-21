@@ -3,7 +3,6 @@
 
 	angular.module("bowlingScoreApp")
 	.controller("scoreController", ['$scope','scoreFactory', function($scope, $SF) {
-
 		this.score = [];
 		this.roll = 0;
 		this.scores = [];
@@ -11,75 +10,86 @@
 		this.maxRoleAllowed = 1;
 		this.total = 0;
 		this.showResult = false;
-		this.updateScoreBoard = function($index){
-			console.log("myIndec - "+ $index);
-			if(this.score[$index] < 0 ||  this.score[$index] >10){
-				this.score.pop();
-				return 0;
-				//this.score[$index] = null;
-			}
+		/**
+		* watch function to check the input values and make server calls to calculate the totale score.
+		*/
 
-			if($SF.currentTurn === 9) {
-				this.maxRoleAllowed = 2;
-			}
-			if(this.roll == this.maxRoleAllowed) {
-				$SF.currentTurn = $SF.currentTurn == 9? $SF.currentTurn : $SF.currentTurn + 1;				
-				prepareAndCalculateScore($index);
-				this.roll = 0;				
-			}
-			else{
-				if(this.score[$index] == 10){
-					var $nextIndex = ($SF.currentTurn < 9 || ($SF.currentTurn == 9 && this.roll < this.maxRoleAllowed)) ? $index + 1 : $index;
-					this.score[$nextIndex] = 'X';	
+		 $scope.$watch(function() { 
+		 		return self.score;
+		  	}, 
+		  	function(newVal, oldVal) { 
 
-					$SF.currentTurn = $SF.currentTurn == 9? $SF.currentTurn : $SF.currentTurn + 1;
-					prepareAndCalculateScore($nextIndex);
-					if ($SF.currentTurn < 9){
-						this.roll = 0;
-					}
-					angular.element('#pin'+($nextIndex + 1) ).focus();
-					
-				} 
-				else{
-					this.roll++;
-				}
-				
-			}			
+			console.log(oldVal);
+			console.log(newVal);
 
-			console.log(this.score[$index]);
-			console.log("scoreFactory.currentTurn "+ $SF.currentTurn)
-			console.log("this.roll "+this.roll);
+        	//TODO verify validation 
+        	if(newVal[newVal.length - 1] > 10){
+        		self.score.pop();
+        	}
+        	if(newVal[newVal.length - 1] == 10 && ((newVal.length -1) % 2 == 0)){
+        		if(newVal.length < 19){
+        			self.score[newVal.length] = 'X';
+        		}
+        	}
+        	if(newVal.length >= 19) {
+    			if(parseInt(self.score[18]) + parseInt(self.score[19]) > 10) {
+    				self.score.pop();
+    			}
+    		}
+    		if( newVal.length > 0 && newVal.length % 2 == 0) {
+    			if(parseInt(self.score[newVal.length - 2]) + parseInt(self.score[newVal.length - 1]) > 10) {
+    				self.score.pop();
+    			}
+    		}
 
-			console.log("$SF.getStore " + JSON.stringify($SF.getScore()));
+        	var scores = $SF.getScore();
+        	var frameIndex = 0;
+        	if(newVal.length < 21 ){
+        		var scores = $SF.getScore();
+        		for(var i = 0; i < 10; i++){
+        			if(self.score.length >= frameIndex){
+        				scores.frames[i].first = self.score[frameIndex];
+        				frameIndex++;
+        			}
+        			
+        			if(self.score.length >= frameIndex){
+        				scores.frames[i].second = self.score[frameIndex];
+        				frameIndex++;
+        			}
 
-		}
+        			if(i == 9){
+        				
+        				if(self.score.length >= frameIndex){
+        					scores.frames[i].third = self.score[frameIndex];
+        					frameIndex++;
+        				}
+        			}
+        		}
 
-		var prepareAndCalculateScore = function($index) {
-			var scores = $SF.getScore();
-			console.log("scores" + $index);
-			scores.frames[$SF.currentTurn].first = self.score[$index - 1];
-			scores.frames[$SF.currentTurn].second = self.score[$index];
-			if($SF.currentTurn == 9) {
-				scores.frames[$SF.currentTurn].third = self.score[$index + 1];
-			}
-			$SF.setScore(scores);
+        		$SF.setScore(scores);
+        		$SF.calculateScore().then(function(response){
+        			console.log(response.data)
+        			self.total = response.data.score;
+        			if($SF.currentTurn == 9) {
+        				self.showResult = true;
+        			}
+        		});
 
-			$SF.calculateScore().then(function(response){
-				console.log(response.data)
-				self.total = response.data.score;
-				if($SF.currentTurn == 9) {
-					self.showResult = true;
-				}
-			});
-		}
+        	}
+
+		  }, true);//<-- turn on this if needed for deep watch
 
 		this.reset = function(){
 			self.showResult = false;
 			$SF.resetdataStore();
 			this.score =[];
 
-		}
+		};
+		this.resetLast = function(){
+			
+			this.score.pop();
 
+		};
 		console.log(this.score);
 
 	}]);
