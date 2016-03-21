@@ -9,7 +9,7 @@
     </head>
     <body ng-controller="scoreController as ctl">
        
-        <div class="container" id="content">
+        <div class="container" id="content" ng-cloak>
 
            <ng-form>
           
@@ -66,7 +66,7 @@
                       </div>
                       <div class="panel-footer" ng-if="ctl.showResult">
                         <div class="alert alert-success" role="alert">
-                         Congratulations! Your final score is <span ng-bind="ctl.score"></span>!
+                         Congratulations! Your final score is <span ng-bind="ctl.total"></span>!
                         </div>
                       </div>
                     </div>
@@ -99,7 +99,6 @@
     <script src="js/core/directive/utils.js"></script>
     <script src="js/core/scoreFactory.js"></script>
     <script src="js/core/scoreController.js"></script>
-    <script src="js/core/player.js"></script>
     <!-- endinject -->
     </body>
 </html>

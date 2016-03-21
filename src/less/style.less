@@ -1,0 +1,47 @@
+// Color variables (appears count calculates by raw css)
+@color0: #f28350; // Appears 2 times
+
+
+
+body {
+	background-color: @color0;
+}
+.container {
+	margin-top: 5%;
+	max-width: 80%;
+}
+#content {
+	.spacer {
+		height: 22px;
+	}
+}
+.spacer {
+	font-size: 0;
+	height: 30px;
+	line-height: 0;
+	overflow: hidden;
+}
+.big {
+	font-size: 1.28571429rem;
+}
+.box {
+	width:30px;
+}
+.footer {
+	p {
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+		font-size:8px;
+		line-height: 1;
+		margin: 0;
+		text-align: center;
+	}
+}
+.text-center {
+	text-align: center;
+}
+input[type="text"] {
+	&:disabled {
+		background-color:@color0;
+		color:#ffffff;
+	}
+}

@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
 
-	angular.module("bowlingScoreApp")
+	angular.module('bowlingScoreApp')
 	.controller("scoreController", ['$scope','scoreFactory', function($scope, $SF) {
 		this.score = [];
 		this.roll = 0;
@@ -26,25 +26,35 @@
         	if(newVal[newVal.length - 1] > 10){
         		self.score.pop();
         	}
-        	if(newVal[newVal.length - 1] == 10 && ((newVal.length -1) % 2 == 0)){
+        	if(parseInt(newVal[newVal.length - 1]) == 10 && ((newVal.length -1) % 2 == 0)){
         		if(newVal.length < 19){
         			self.score[newVal.length] = 'X';
         		}
         	}
         	if(newVal.length >= 19) {
-    			if(parseInt(self.score[18]) + parseInt(self.score[19]) > 10) {
-    				self.score.pop();
+        		
+        		if(parseInt(self.score[18]) != 10) {
+        			if(parseInt(self.score[18]) + parseInt(self.score[19]) > 10) {    				
+    					self.score.pop();
+    				}
+        		}
+    			
+    		}
+    		else{
+
+    			if( newVal.length > 0 && newVal.length % 2 == 0) {
+    				if(parseInt(self.score[newVal.length - 2]) + parseInt(self.score[newVal.length - 1]) > 10) {
+    					//console.log("poped qui 2");
+    					self.score.pop();
+    				}
     			}
     		}
-    		if( newVal.length > 0 && newVal.length % 2 == 0) {
-    			if(parseInt(self.score[newVal.length - 2]) + parseInt(self.score[newVal.length - 1]) > 10) {
-    				self.score.pop();
-    			}
-    		}
+    		
+    		
 
         	var scores = $SF.getScore();
         	var frameIndex = 0;
-        	if(newVal.length < 21 ){
+        	if(newVal.length <= 21 ){
         		var scores = $SF.getScore();
         		for(var i = 0; i < 10; i++){
         			if(self.score.length >= frameIndex){
@@ -58,8 +68,9 @@
         			}
 
         			if(i == 9){
-        				
+        				console.log("i==9" + self.score.length + "----" + frameIndex);
         				if(self.score.length >= frameIndex){
+        					console.log("------- + " +JSON.stringify(self.score));
         					scores.frames[i].third = self.score[frameIndex];
         					frameIndex++;
         				}
@@ -70,9 +81,8 @@
         		$SF.calculateScore().then(function(response){
         			console.log(response.data)
         			self.total = response.data.score;
-        			if($SF.currentTurn == 9) {
-        				self.showResult = true;
-        			}
+        			self.showResult = self.score.length >=21 || false;
+        			
         		});
 
         	}

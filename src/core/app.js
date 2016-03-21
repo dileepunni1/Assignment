@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("bowlingScoreApp", ['ui.bootstrap'])
+angular.module('bowlingScoreApp', ['ui.bootstrap'])
 .constant('PATHS', {
 
     'basepath': 'http://46.101.10.61/bowling/api/index.php/'
@@ -9,9 +9,9 @@ angular.module("bowlingScoreApp", ['ui.bootstrap'])
     //Enable cross domain calls
 	$httpProvider.defaults.useXDomain = true;
 	$httpProvider.defaults.withCredentials = false;
-	delete $httpProvider.defaults.headers.common["X-Requested-With"];
-	$httpProvider.defaults.headers.common["Accept"] = "application/json";
-	$httpProvider.defaults.headers.common["Content-Type"] = "application/json";
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+	$httpProvider.defaults.headers.common['Accept'] = 'application/json';
+	$httpProvider.defaults.headers.common['Content-Type'] = 'application/json';
 	$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 	
 
