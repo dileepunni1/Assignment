@@ -12,6 +12,7 @@
 								   	{"first": 0, "second": 0}, {"first": 0, "second": 0,"third":0}
 								 ] 
 						 };
+			var cpDataStore = angular.copy(dataStore);
 			var getScore = function(){
 				return dataStore
 
@@ -34,9 +35,13 @@
 					}
 				)
 			}
+			var reset = function(){
+				dataStore = angular.copy(cpDataStore);
+			}
 
 			return{
 				"getScore":getScore,
+				"resetdataStore":reset,
 				"setScore":setScore,
 				"calculateScore":calculateScore,
 				"currentTurn":turn

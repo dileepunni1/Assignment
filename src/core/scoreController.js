@@ -73,6 +73,13 @@
 			});
 		}
 
+		this.reset = function(){
+			self.showResult = false;
+			$SF.resetdataStore();
+			this.score =[];
+
+		}
+
 		console.log(this.score);
 
 	}]);
