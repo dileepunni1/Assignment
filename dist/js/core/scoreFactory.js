@@ -24,7 +24,7 @@
 			
 			var turn = -1;
 			var calculateScore = function () {
-				console.log(this.dataStore);
+				//console.log(this.dataStore);
 
 				return $http.post(path.basepath + 'score/calculate', $.param({ 'frames': this.dataStore })).then(
 					function successCallBack(data){

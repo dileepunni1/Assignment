@@ -7,11 +7,11 @@
         <link rel="stylesheet" type="text/css" href="assets/bower_components/bootstrap/dist/css/bootstrap.css"><link rel="stylesheet" type="text/css" href="assets/main.css">
     
     </head>
-    <body ng-controller="scoreController as ctl">
+    <body ng-controller="scoreController as ctl" id="body" >
        
-        <div class="container" id="content" ng-cloak>
+        <div class="container flash"  id="content" style="display:none;">
 
-           <ng-form>
+           
           
                 <div class="row">
                   <div class="col-xs-12 col-sm-12 col-md-12">
@@ -25,48 +25,54 @@
                   
                     <div class="spacer"></div>
 
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" style="display:hidden;" ng-style="ctl.loaded">
                       <div class="panel-heading">
 
                        <div class="row">
                         <div class="col-md-12">
-                          <div class="pull-left">  Score: <b><span ng-bind="ctl.total" /></b></div>
+                          <div class="pull-left"> <strong>Current Score: <span ng-bind="ctl.total" /></strong></div>
                           <div class="pull-right">
                             <span class="btn btn-success" ng-if="ctl.score.length >= 1" ng-click="ctl.resetLast()">Reset last</span>
                             <span class="btn btn-success" ng-click="ctl.reset()">Reset all</span>
                           </div>
                         </div>
                        </div>
-
-                      
-
-                    
-                     
-                      </div>
+                     </div>
                       <div class="panel-body">  
                                
                               <table class="table">
                                  <thead>
                                      <tr >
-                                         <td class="text-center" colspan="{{ i === 10 ? 3 : 2}}" ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]"><span ng-bind="i"></span></td>
+                                         <td class="text-center" colspan="{{ i === 10 ? 3 : 2}}" ng-repeat="i in ::[1,2,3,4,5,6,7,8,9,10]"><strong><span ng-bind="i"></span></strong></td>
                                      </tr>
                                  </thead>
                                  <tbody>
                                      <tr>
-                                         <td ng-repeat = "j in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] track by $index">
+                                         <td ng-repeat = "j in ::[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] track by $index">
                                              <input type="text" name="pin{{$index}}" id="pin{{$index}}" ng-model="ctl.score[$index]" ng-model-options="{ debounce: 500 }"  class="box text-center"  maxlength="2" ng-disabled="ctl.score.length < $index || ctl.score.length > $index" />
                                          </td>
                                      </tr>
                                     
                                  </tbody>
+                                 <tfoot>
+                                  <tr>
+                                        <td class="text-center" colspan="{{ i === 10 ? 3 : 2}}" ng-repeat="i in ::[1,2,3,4,5,6,7,8,9,10]">
+                                          <strong>
+                                            <span ng-bind="ctl.slotResults[i-1] > 0 ? ctl.slotResults[i-1]: '' "></span>
+                                          </strong>
+                                        </td>
+                                    </tr>
+                                 </tfoot>
                                  
                               </table>
                             
                         
                       </div>
-                      <div class="panel-footer" ng-if="ctl.showResult">
+                      <div class="panel-footer" ng-show="ctl.showResult">
                         <div class="alert alert-success" role="alert">
-                         Congratulations! Your final score is <span ng-bind="ctl.total"></span>!
+                          <strong>
+                            Congratulations! Your final score is <span ng-bind="ctl.total"></span>!
+                          </strong>
                         </div>
                       </div>
                     </div>
@@ -76,14 +82,13 @@
                  
                 </div>
 
-            </ng-form>
-
+           
         </div>
        
-        <footer class="footer">
-            <div class="footer-w">
-                <p>© DSG | POWERED BY ANGULARJS &amp; PHP</p>
-            </div>
+        <footer class="footer flash" style="display:none;">
+            <p class="footer-w">
+                <p>&reg; DSG | POWERED BY ANGULARJS &amp; PHP</p>
+            </p>
         </footer>
 
        <script src="js/bower_components/jquery/dist/jquery.js"></script>

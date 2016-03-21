@@ -30,6 +30,10 @@ class index extends baseRequest{
 
 	}
 
+	
+	/**
+	* Handler function for path /score/calculate.
+	*/
 	function getTotalScore(){
 
 		
@@ -38,39 +42,27 @@ class index extends baseRequest{
 		header("Access-Control-Allow-Origin: *");
 		header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
+		
 		if($this->request_type() === 'post') {
 
 			$frames = $_POST['frames'];
+			
 			//print_r($frames);
 			if (filter_var($frames, FILTER_CALLBACK, array("options"=>"baseRequest::verify_json"))) {
 
 				if(is_array($frames['frames'])) {
 					$objScore = new \Controller\scoreController();
 					//print_r($frames['frames']);
-					echo json_encode(['score' => $objScore->getTotalScore($frames['frames'])]);
+					$varResult = $objScore->getTotalScore($frames['frames'], 0);
+
+					
+					echo json_encode(['score' => $varResult]);
 				}
 			}
 		}
 	}
 
 
-	function ffTest() {
-	$objScore = new \Controller\scoreController();
-	
-	echo json_encode($objScore->getTotalScore(
-		Array ( 
-    	     Array ( "first" => 10, "second" => 0 ), 
-    	     Array ( "first" => 10, "second" => 0 ) ,
-    	     Array ( "first" => 10, "second" => 0 ) ,
-    	     Array ( "first" => 10, "second" => 0 ) ,
-    	     Array ( "first" => 10, "second" => 0 ) ,
-    	     Array ( "first" => 10, "second" => 0 ) ,
-    	     Array ( "first" => 10, "second" => 0 ) ,
-    	     Array ( "first" => 10, "second" => 0 ),
-    	     Array ( "first" => 10, "second" => 0 ),
-    	     Array ( "first" => 10, "second" => 10, "third" => 10 ) )
-		));
-}
 }
 
 
@@ -82,14 +74,6 @@ $router = new R();
 
 // Add a route with a callback function
 $router->a('/score/calculate', [new index, 'getTotalScore']);
-
-
-
-$router->a('/score/tt', [new index, 'ffTest']);
-
-
-
-
 $router->e();
 
 

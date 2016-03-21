@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('bowlingScoreApp')
-	.controller("scoreController", ['$scope','scoreFactory', function($scope, $SF) {
+	.controller("scoreController", ['$scope','scoreFactory','$timeout', function($scope, $SF, $timeout) {
 		this.score = [];
 		this.roll = 0;
 		this.scores = [];
@@ -10,6 +10,8 @@
 		this.maxRoleAllowed = 1;
 		this.total = 0;
 		this.showResult = false;
+        this.slotResults = [];
+        
 		/**
 		* watch function to check the input values and make server calls to calculate the totale score.
 		*/
@@ -19,8 +21,8 @@
 		  	}, 
 		  	function(newVal, oldVal) { 
 
-			console.log(oldVal);
-			console.log(newVal);
+			//console.log(oldVal);
+			//console.log(newVal);
 
         	//TODO verify validation 
         	if(newVal[newVal.length - 1] > 10){
@@ -68,9 +70,9 @@
         			}
 
         			if(i == 9){
-        				console.log("i==9" + self.score.length + "----" + frameIndex);
+        				//console.log("i==9" + self.score.length + "----" + frameIndex);
         				if(self.score.length >= frameIndex){
-        					console.log("------- + " +JSON.stringify(self.score));
+        					//console.log("------- + " +JSON.stringify(self.score));
         					scores.frames[i].third = self.score[frameIndex];
         					frameIndex++;
         				}
@@ -79,15 +81,21 @@
 
         		$SF.setScore(scores);
         		$SF.calculateScore().then(function(response){
-        			console.log(response.data)
-        			self.total = response.data.score;
+        			//console.log(response.data)
+                    if( response.data.score) {
+                        self.total = response.data.score['totalScore'];
+                        self.slotResults = response.data.score['frameScore'];
+                    }        			
         			self.showResult = self.score.length >=21 || false;
         			
         		});
 
         	}
-
+            
 		  }, true);//<-- turn on this if needed for deep watch
+        /**
+        * Reset form and text box
+        */
 
 		this.reset = function(){
 			self.showResult = false;
@@ -95,15 +103,20 @@
 			this.score =[];
 
 		};
+        /**
+        * Reset last throw.
+        */
 		this.resetLast = function(){
 			
 			this.score.pop();
 
 		};
-		console.log(this.score);
+		
+
 
 	}]);
 
+setTimeout(function(){ document.querySelector(".flash").style.display='block'}, 300);
 
 
 }());

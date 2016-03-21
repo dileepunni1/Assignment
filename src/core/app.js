@@ -3,7 +3,7 @@
 angular.module('bowlingScoreApp', ['ui.bootstrap'])
 .constant('PATHS', {
 
-    'basepath': 'http://46.101.10.61/bowling/api/index.php/'
+    'basepath': 'http://46.101.10.61/APSIS/server/api/index.php/'
 })
 .config(function($httpProvider) {
     //Enable cross domain calls

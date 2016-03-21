@@ -7,8 +7,12 @@ class scoreController {
 
 	
 	function __construct() {}
-
-	function getTotalScore($frames){
+	/**
+	* Calculate total score and return result.
+	* @param $frames array
+	* @param $test number	
+	*/
+	function getTotalScore($frames, $test = 1){
 
 		$SM = new \Model\ScoreManager();
 			//print_r($frames);
@@ -23,8 +27,10 @@ class scoreController {
 		            $SM->add($value['first'], $value['second'], $value['third']);
 		        }
 			}
-
-		return  $SM->score();
+		$objScore = $SM->score();
+		//$test is used to identify if the call is a unit test or other.
+		
+		return  $test == 0 ? $objScore : $objScore['totalScore'];
 
 	}
 		

@@ -13,7 +13,9 @@ class ScoreManager {
         $f = new \Model\Slot($first, $second, $bonus);
         $this->frames[] = $f;
     }
-    
+    /**
+    * calculate total and total for slot.
+    */
     public function score()
     {   
         // total score
@@ -26,36 +28,47 @@ class ScoreManager {
         $totalScore = 0;
         
         // sum of score
+        $objTotalScore = array("totalScore" =>0,'frameScore' =>array());
         for($i=0; $i<$theFrame; $i++)
         {
             // sum of score from slot
-            $totalScore += $this->frames[$i]->score();
+
+            $totalScore_ = $this->frames[$i]->score();
+            
             
             if(!$this->isLastSlot($i) && $this->frames[$i]->is_strike())
             {
                 // Add strike score
-                $totalScore += $this->sumnextTwoLaunches($i);
+                $totalScore_ += $this->sumnextTwoLaunches($i);
             }
             else if(!$this->isLastSlot($i) && $this->frames[$i]->is_spare())
             {
                 // Add spare score
-                $totalScore += $this->sumNextLaunch($i);
+                $totalScore_ += $this->sumNextLaunch($i);
             }
             else if($this->isLastSlot($i) && $this->frames[$i]->is_spare() || $this->frames[$i]->is_strike())
             {
                 // Add final-slot bonus score
-                $totalScore += $this->frames[$i]->score('third');
+                $totalScore_ += $this->frames[$i]->score('third');
             }
+            $objTotalScore['totalScore'] += $totalScore_;
+            array_push($objTotalScore['frameScore'], $totalScore_);
         }
         
-        return $totalScore;
+        return $objTotalScore;
     }
     
+    /**
+    * get the total number of slots.
+    */
     public function numberOfSlots()
     {
         return count($this->frames);
     }
-    
+
+    /**
+    * Sum of the next two launches( used when a strike)
+    */
     function sumnextTwoLaunches($pos)
     {
         if(isset($this->frames[$pos+1]) && !$this->frames[$pos+1]->is_strike())
@@ -67,12 +80,17 @@ class ScoreManager {
             return $this->frames[$pos+1]->score() + $this->sumNextLaunch($pos+1);
         }
     }
-
+    /**
+    * value of thr next launch(used in spare)
+    */
     function sumNextLaunch($pos)
     {
         return isset($this->frames[$pos+1]) ? $this->frames[$pos+1]->score('first') : null;
     }
     
+    /**
+    * check if the playing last turn
+    */
     function isLastSlot($pos)
     {
         // Last frame should have index of 9
