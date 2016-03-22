@@ -51,8 +51,6 @@
     				}
     			}
     		}
-    		
-    		
 
         	var scores = $SF.getScore();
         	var frameIndex = 0;
@@ -82,7 +80,8 @@
         		$SF.setScore(scores);
         		$SF.calculateScore().then(function(response){
         			//console.log(response.data)
-                    if( response.data.score) {
+                    if(response.data.score) {
+                        //console.log(response.data.score);
                         self.total = response.data.score['totalScore'];
                         self.slotResults = response.data.score['frameScore'];
                     }        			
@@ -115,6 +114,7 @@
 
 
 	}]);
+
 
 setTimeout(function(){ document.querySelector(".flash").style.display='block'}, 300);
 
